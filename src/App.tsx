@@ -1,13 +1,13 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/UI/NavBar';
 
 function App() {
   return (
-    <div>
-      
-    </div>
+    <React.Fragment>
+      <NavBar />
+    </React.Fragment>
   );
 }
 
