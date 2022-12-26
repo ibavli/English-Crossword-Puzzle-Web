@@ -1,0 +1,41 @@
+.game-container {
+    height: 80vh;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.crossword-container {
+    height: 100%;
+    width: 70%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.game-text-container {
+    height: 100%;
+    width: 30%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+
+
+.parent {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: 250px;
+    background-color: red;
+}
+
+.child {
+    width: 40%;
+    height: 100%;
+    background-color: blue;
+}

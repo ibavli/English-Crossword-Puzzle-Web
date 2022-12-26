@@ -1,5 +1,5 @@
 import React from 'react';
-import CrosswordContainer from './GameComponents/CrosswordContainer';
+import CrosswordContainer from './GameComponents/GameContainer';
 
 const HomePage = () => {
     return (

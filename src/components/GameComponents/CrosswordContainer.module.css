@@ -1,24 +1,16 @@
-.game-container {
-    height: 80vh;
-    overflow: hidden;
-    position: relative;
+
+.main-crossword-container{
+    display: block;
+    height: 100%;
     width: 100%;
-    display: flex;
-    justify-content: center;
+    align-content: center;
+    padding: 1%;
 }
 
-.crossword-container {
-    height: 100%;
-    width: 70%;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
 
-.game-text-container {
+.child {
+    width: 33%;
     height: 100%;
-    width: 30%;
-    position: absolute;
-    right: 0;
-    top: 0;
+    border: solid 1px;
+    border-color: black;
 }
