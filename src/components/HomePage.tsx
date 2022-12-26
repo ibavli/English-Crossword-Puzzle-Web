@@ -1,10 +1,10 @@
 import React from 'react';
-import CrosswordContainer from './GameComponents/GameContainer';
+import GameContainer from './GameComponents/GameContainer';
 
 const HomePage = () => {
     return (
         <React.Fragment>
-            <CrosswordContainer />
+            <GameContainer />
         </React.Fragment>
     );
 }
