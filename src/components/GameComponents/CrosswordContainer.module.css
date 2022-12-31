@@ -6,11 +6,3 @@
     align-content: center;
     padding: 1%;
 }
-
-
-.child {
-    width: 33%;
-    height: 100%;
-    border: solid 1px;
-    border-color: black;
-}

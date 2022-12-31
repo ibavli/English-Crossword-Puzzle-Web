@@ -1,0 +1,14 @@
+
+.usage-buttons-container {
+    height: '5%';
+    display: 'flex';
+    align-content: 'flex-start';
+}
+
+.usage-container {
+    border: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    margin-left: 5px;
+    text-align: center;
+}
