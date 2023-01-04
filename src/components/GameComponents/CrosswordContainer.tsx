@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { BeginnerWords } from '../../helpers/data/Words';
-import { GetCrosswordModel, SetClickCrosswordModel, GetCorrectAnswer } from '../../helpers/functions/helperFunctions'
+import { GetCrosswordModel, GetCorrectAnswer, UpdateCrosswordArray, SetAnswer } from '../../helpers/functions/helperFunctions'
+import { black, green, lightPurple, red, white } from '../../helpers/materials/colors';
 import { CrosswordFunctionModel, CrosswordPuzzleApiModel } from '../../helpers/models/CrosswordModels';
 import classes from './CrosswordContainer.module.css';
 
-let initialValue: CrosswordFunctionModel = { array: [], height: 0, width: 0 }
-const alphabets = "abcdefghijklmnopqrstuvwxyz";
+let initialValue: CrosswordFunctionModel = { array: [], height: 0, width: 0, currentIndexes: [], horizon: false };
 
 const CrosswordContainer = () => {
-    const [crosswordFuncModel, setCrosswordArray] = useState<CrosswordFunctionModel>(initialValue);
+    const [crosswordFuncModel, _setCrosswordArray] = useState<CrosswordFunctionModel>(initialValue);
     const [correctAnswer, _setCorrectAnswer] = useState<string>('');
+    const [selectedIndexes, _setSelectedIndexes] = useState<number[][]>([]);
 
     useEffect(() => {
         setCrosswordArray(GetCrosswordModel(BeginnerWords)!);
@@ -18,24 +19,40 @@ const CrosswordContainer = () => {
     }, []);
 
     const onClickDiv = (item: CrosswordPuzzleApiModel) => {
-        if (item.emptyContainer === false) {
-            setCrosswordArray((prevState) => {
-                return { ...SetClickCrosswordModel(item, crosswordFuncModel) };
+        if (item.emptyContainer === false && !item.done) {
+            UpdateCrosswordArray(item, crosswordFuncModel).then((newCrosswordModel: CrosswordFunctionModel) => {
+                setCrosswordArray({ ...newCrosswordModel });
+                setSelectedIndexes(newCrosswordModel.currentIndexes);
             });
             setCorrectAnswer(GetCorrectAnswer(item));
+            console.log(item.horizontalCorrectAnswer + ' ' + item.verticalCorrectAnswer)
         }
     }
 
-    const myStateRef = React.useRef(correctAnswer);
+    const crosswordFuncModelRef = React.useRef(crosswordFuncModel);
+    const setCrosswordArray = (data: CrosswordFunctionModel) => {
+        crosswordFuncModelRef.current = data;
+        _setCrosswordArray(data);
+    };
+
+    const selectedIndexesRef = React.useRef(selectedIndexes);
+    const setSelectedIndexes = (data: number[][]) => {
+        selectedIndexesRef.current = data;
+        _setSelectedIndexes(data);
+    };
+
+    const correctAnswerRef = React.useRef(correctAnswer);
     const setCorrectAnswer = (data: string) => {
-        myStateRef.current = data;
+        correctAnswerRef.current = data;
         _setCorrectAnswer(data);
     };
 
     const handleKeyDown = (event: any) => {
-        if (alphabets.includes(event.key)) {
-            console.log(myStateRef.current)
-        }
+        let temp = { ...crosswordFuncModelRef.current };
+        SetAnswer(temp, event.key, selectedIndexesRef.current, correctAnswerRef.current).then((newCrosswordModel: CrosswordFunctionModel) => {
+            setCrosswordArray({ ...newCrosswordModel });
+            setSelectedIndexes(newCrosswordModel.currentIndexes);
+        });
     };
 
     const dynamicParentCss = { display: 'flex', alignContent: 'flex-start', height: `${100 / crosswordFuncModel.height}%` } as React.CSSProperties;
@@ -54,11 +71,13 @@ const CrosswordContainer = () => {
                                             height: '100%',
                                             border: subItem.emptyContainer ? 'none' : 'solid',
                                             borderWidth: 1, borderColor: 'gray',
-                                            backgroundColor: subItem.clicked ? 'red' : 'white'
+                                            backgroundColor: subItem.done ? white : subItem.clicked ? lightPurple : white
                                         }}
                                             key={subItem.key}
                                             onClick={() => onClickDiv(subItem)}>
-                                            <p style={{ fontSize: '90%', textAlign: 'center' }}>{subItem.alphabet}</p>
+                                            <p style={{ fontSize: '90%', textAlign: 'center', color: subItem.done ? green : subItem.markWrong ? red : black }}>
+                                                {subItem.done ? subItem.alphabet : subItem.userInput}
+                                            </p>
                                         </div>
                                     )
                                 })
@@ -67,7 +86,7 @@ const CrosswordContainer = () => {
                     )
                 })
             }
-        </div>
+        </div >
     );
 };
 
