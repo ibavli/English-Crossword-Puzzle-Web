@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BeginnerWords } from '../../helpers/data/Words';
 import { GetCrosswordModel, GetCorrectAnswer, UpdateCrosswordArray, SetAnswer } from '../../helpers/functions/helperFunctions'
-import { black, green, lightPurple, red, white } from '../../helpers/materials/colors';
+import { black, green, lightGray, lightPurple, red, white } from '../../helpers/materials/colors';
 import { CrosswordFunctionModel, CrosswordPuzzleApiModel } from '../../helpers/models/CrosswordModels';
 import classes from './CrosswordContainer.module.css';
 
@@ -55,6 +55,37 @@ const CrosswordContainer = () => {
         });
     };
 
+    const getSubDivCSS = (subItem: CrosswordPuzzleApiModel): React.CSSProperties => {
+        return {
+            width: `${100 / crosswordFuncModel.width}%`,
+            height: '100%',
+            border: subItem.emptyContainer ? 'none' : 'solid',
+            borderWidth: 1, borderColor: 'gray',
+            textAlign: 'center',
+            backgroundColor: subItem.emptyContainer
+                ? white
+                : subItem.done
+                    ? lightGray
+                    : subItem.clicked
+                        ? lightPurple
+                        : lightGray
+        } as React.CSSProperties;
+    }
+
+    const getTextCSS = (subItem: CrosswordPuzzleApiModel): React.CSSProperties => {
+        return {
+            fontSize: '90%',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            fontWeight: 'bold',
+            color: subItem.done
+                ? green
+                : subItem.markWrong
+                    ? red
+                    : black
+        } as React.CSSProperties;
+    }
+
     const dynamicParentCss = { display: 'flex', alignContent: 'flex-start', height: `${100 / crosswordFuncModel.height}%` } as React.CSSProperties;
 
     return (
@@ -66,18 +97,8 @@ const CrosswordContainer = () => {
                             {
                                 item.map((subItem) => {
                                     return (
-                                        <div style={{
-                                            width: `${100 / crosswordFuncModel.width}%`,
-                                            height: '100%',
-                                            border: subItem.emptyContainer ? 'none' : 'solid',
-                                            borderWidth: 1, borderColor: 'gray',
-                                            backgroundColor: subItem.done ? white : subItem.clicked ? lightPurple : white
-                                        }}
-                                            key={subItem.key}
-                                            onClick={() => onClickDiv(subItem)}>
-                                            <p style={{ fontSize: '90%', textAlign: 'center', color: subItem.done ? green : subItem.markWrong ? red : black }}>
-                                                {subItem.done ? subItem.alphabet : subItem.userInput}
-                                            </p>
+                                        <div style={getSubDivCSS(subItem)} key={subItem.key} onClick={() => onClickDiv(subItem)}>
+                                            <span style={getTextCSS(subItem)}>{subItem.done ? subItem.alphabet : subItem.userInput}</span>
                                         </div>
                                     )
                                 })
@@ -86,7 +107,7 @@ const CrosswordContainer = () => {
                     )
                 })
             }
-        </div >
+        </div>
     );
 };
 
