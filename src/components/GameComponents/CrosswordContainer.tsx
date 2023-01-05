@@ -3,6 +3,8 @@ import { BeginnerWords } from '../../helpers/data/Words';
 import { GetCrosswordModel, GetCorrectAnswer, UpdateCrosswordArray, SetAnswer } from '../../helpers/functions/helperFunctions'
 import { black, green, lightGray, lightPurple, red, white } from '../../helpers/materials/colors';
 import { CrosswordFunctionModel, CrosswordPuzzleApiModel } from '../../helpers/models/CrosswordModels';
+import { useHttp } from '../../hooks/use-http';
+import { getWord } from '../../lib/dictionaryApi';
 import classes from './CrosswordContainer.module.css';
 
 let initialValue: CrosswordFunctionModel = { array: [], height: 0, width: 0, currentIndexes: [], horizon: false };
@@ -11,6 +13,7 @@ const CrosswordContainer = () => {
     const [crosswordFuncModel, _setCrosswordArray] = useState<CrosswordFunctionModel>(initialValue);
     const [correctAnswer, _setCorrectAnswer] = useState<string>('');
     const [selectedIndexes, _setSelectedIndexes] = useState<number[][]>([]);
+    const { sendRequest, status, data: loadedQuotes, error } = useHttp(getWord);
 
     useEffect(() => {
         setCrosswordArray(GetCrosswordModel(BeginnerWords)!);
@@ -24,8 +27,9 @@ const CrosswordContainer = () => {
                 setCrosswordArray({ ...newCrosswordModel });
                 setSelectedIndexes(newCrosswordModel.currentIndexes);
             });
-            setCorrectAnswer(GetCorrectAnswer(item));
-            console.log(item.horizontalCorrectAnswer + ' ' + item.verticalCorrectAnswer)
+            const correctAnswer: string = GetCorrectAnswer(item);
+            setCorrectAnswer(correctAnswer);
+            getWord(correctAnswer);
         }
     }
 
