@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { BeginnerWords } from '../../helpers/data/Words';
 import { GetCrosswordModel, GetCorrectAnswer, UpdateCrosswordArray, SetAnswer } from '../../helpers/functions/helperFunctions'
 import { black, green, lightGray, lightPurple, red, white } from '../../helpers/materials/colors';
 import { CrosswordFunctionModel, CrosswordPuzzleApiModel } from '../../helpers/models/CrosswordModels';
 import { useHttp } from '../../hooks/use-http';
-import { getWord } from '../../lib/dictionaryApi';
+import { getMeaningsFromDictionaryApi } from '../../lib/dictionaryApi';
+import { meaningActions } from '../../store/meaningSlice';
 import classes from './CrosswordContainer.module.css';
+import { DictionaryAPIModel } from '../../helpers/models/DictionaryApiModel';
 
 let initialValue: CrosswordFunctionModel = { array: [], height: 0, width: 0, currentIndexes: [], horizon: false };
 
@@ -13,7 +16,8 @@ const CrosswordContainer = () => {
     const [crosswordFuncModel, _setCrosswordArray] = useState<CrosswordFunctionModel>(initialValue);
     const [correctAnswer, _setCorrectAnswer] = useState<string>('');
     const [selectedIndexes, _setSelectedIndexes] = useState<number[][]>([]);
-    const { sendRequest, status, data: loadedQuotes, error } = useHttp(getWord);
+    const { sendRequest, status, data: loadedQuotes, error } = useHttp(getMeaningsFromDictionaryApi);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setCrosswordArray(GetCrosswordModel(BeginnerWords)!);
@@ -29,7 +33,9 @@ const CrosswordContainer = () => {
             });
             const correctAnswer: string = GetCorrectAnswer(item);
             setCorrectAnswer(correctAnswer);
-            getWord(correctAnswer);
+            getMeaningsFromDictionaryApi(correctAnswer).then((responseData: DictionaryAPIModel) => {
+                dispatch(meaningActions.setMeanings(responseData));
+            });
         }
     }
 
