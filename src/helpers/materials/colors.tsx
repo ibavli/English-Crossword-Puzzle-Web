@@ -7,3 +7,4 @@ export const green: string = '#008000';
 export const black: string = '#000';
 export const red: string = '#fa2525';
 export const lightGray: string = '#E8E8E8';
+export const gray: string = '#808080';

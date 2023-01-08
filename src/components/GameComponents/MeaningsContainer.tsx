@@ -23,16 +23,15 @@ const MeaningsContainer = () => {
     return (
         <div style={{ height: '100%' }}>
             {
-                meanings.map((item: MeaningsModel) => {
-                    return <div>
+                meanings.map((item: MeaningsModel, index: number) => {
+                    return <div key={`${item.partOfSpeech}_${index}`}>
                         <span>{item.partOfSpeech}</span>
                         <ul>
                             {
-                                item.meanings.slice(0, 10).map((subItem: string) => {
-                                    return <li>{subItem}</li>
+                                item.meanings.slice(0, 10).map((subItem: string, subIndex: number) => {
+                                    return <li key={`${subItem}_${subIndex}`}>{subItem}</li>
                                 })
                             }
-
                         </ul>
                     </div>
                 })

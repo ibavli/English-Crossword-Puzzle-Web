@@ -1,6 +1,8 @@
 // @ts-ignore
 import CWG from 'cwg';
+import { BeginnerWords, IntermediateWords, AdvanceWords } from '../data/Words';
 import { CrosswordPuzzleApiModel, CrosswordFunctionModel, clickibleIndexes } from '../models/CrosswordModels';
+import { Advance, Beginner, Intermediate } from '../ResourceHelper/ResourceHelper';
 const alphabets = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 export const ShuffleArray = (array: any[]): any[] => {
@@ -19,10 +21,16 @@ export const ShuffleArray = (array: any[]): any[] => {
     return newArray;
 };
 
-export const GetCrosswordModel = (arrayParam: any[]): CrosswordFunctionModel | undefined => {
-
+export const GetCrosswordModel = (usage: string): CrosswordFunctionModel | undefined => {
     try {
-        const newArray = [...ShuffleArray(arrayParam)];
+        const words: string[] = (usage === Beginner)
+            ? BeginnerWords
+            : (usage === Intermediate)
+                ? IntermediateWords
+                : (usage === Advance)
+                    ? AdvanceWords
+                    : BeginnerWords;
+        const newArray = [...ShuffleArray(words)];
         const apiData: any = CWG(newArray.slice(0, 20));
         const height: number = apiData.height;
         const width: number = apiData.width;
