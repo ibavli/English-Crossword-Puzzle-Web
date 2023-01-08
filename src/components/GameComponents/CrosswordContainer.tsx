@@ -52,8 +52,8 @@ const CrosswordContainer = () => {
     }, [loading]);
 
     const onClickDiv = (item: CrosswordPuzzleApiModel) => {
-        setLoading(true);
         if (item.emptyContainer === false && !item.done) {
+            setLoading(true);
             UpdateCrosswordArray(item, crosswordFuncModel).then((newCrosswordModel: CrosswordFunctionModel) => {
                 setCrosswordArray({ ...newCrosswordModel });
                 setSelectedIndexes(newCrosswordModel.currentIndexes);
@@ -81,7 +81,7 @@ const CrosswordContainer = () => {
             width: `${100 / crosswordFuncModel.width}%`,
             height: '100%',
             border: 'solid',
-            borderWidth: 1, 
+            borderWidth: 1,
             borderColor: subItem.emptyContainer ? white : gray,
             textAlign: 'center',
             backgroundColor: subItem.emptyContainer
