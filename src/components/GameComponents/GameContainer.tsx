@@ -2,11 +2,12 @@ import React from 'react';
 import Card from '../UI/Card';
 import CrosswordContainer from './CrosswordContainer';
 import classes from './GameContainer.module.css';
+import MeaningsContainer from './MeaningsContainer';
 import UsageButtons from './UsageButtons';
 
 const GameContainer = () => {
-    
-    const usageButtonClickHandler = (id: string | undefined): React.MouseEventHandler<HTMLDivElement> |void => {
+
+    const usageButtonClickHandler = (id: string | undefined): React.MouseEventHandler<HTMLDivElement> | void => {
         console.log(id);
     }
 
@@ -21,7 +22,9 @@ const GameContainer = () => {
                 <Card>
                     <div className={classes['inner-text-container']}>
                         <UsageButtons usageButtonOnClick={usageButtonClickHandler} />
-                        <div style={{ height: '95%' }}>test2</div>
+                        <div style={{ height: '95%' }}>
+                            <MeaningsContainer />
+                        </div>
                     </div>
                 </Card>
             </div>
