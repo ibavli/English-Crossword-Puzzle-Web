@@ -1,19 +1,26 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { black, white } from '../../helpers/materials/colors';
 import { Advance, Beginner, Intermediate } from '../../helpers/ResourceHelper/ResourceHelper';
+import { useAppSelector } from '../../store/hooks';
+import { usageActions } from '../../store/usageSlice';
 import classes from './UsageButtons.module.css';
 
-const UsageButtons: React.FC<{ usageButtonOnClick: (id: string) => void }> = (props) => {
+// const UsageButtons: React.FC<{ usageButtonOnClick: (id: string) => void }> = (props) => {
+const UsageButtons = () => {
+    const usage = useAppSelector((state) => state.usage);
+    const dispatch = useDispatch();
 
     const onClickDiv = (e: React.MouseEvent<HTMLDivElement>) => {
         let htmlInputElement = e.target as HTMLInputElement;
         let context: string = htmlInputElement.textContent != null ? htmlInputElement.textContent : '';
-        props.usageButtonOnClick(context);
+        dispatch(usageActions.setUsage(context));
     }
 
     const generateDynamicButton = (text: string) => {
         return (
-            <div className={`col-sm ${classes['usage-container']}`} onClick={onClickDiv}>
-                <span>{text}</span>
+            <div className={`col-sm ${classes['usage-container']} ${text === usage ? classes['active-button'] : ''}`} onClick={onClickDiv}>
+                <span style={{ fontWeight: 'bold', color: text === usage ? white : black }}>{text}</span>
             </div>
         );
     };
