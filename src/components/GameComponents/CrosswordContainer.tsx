@@ -59,6 +59,9 @@ const CrosswordContainer = () => {
             getMeaningsFromDictionaryApi(correctAnswer).then((responseData: DictionaryAPIModel) => {
                 dispatch(meaningActions.setMeanings(responseData));
                 console.log(correctAnswer);
+            }).catch(() => {
+                const payload: DictionaryAPIModel = { data: [] };
+                dispatch(meaningActions.setMeanings(payload));
             });
             setLoading(false);
         }
