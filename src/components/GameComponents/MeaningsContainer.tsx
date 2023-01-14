@@ -4,6 +4,11 @@ import classes from './MeaningsContainer.module.css';
 
 const MeaningsContainer = () => {
     const apiModel = useAppSelector((state) => state.meaning.data);
+    const meaningUrl = (apiModel !== undefined && apiModel.length > 0 && apiModel[0].phonetics[0].audio !== '')
+        ? apiModel[0].phonetics[0].audio
+        : apiModel !== undefined && apiModel.length > 0 && apiModel[0].phonetics[1] !== undefined && apiModel[0].phonetics[1].audio !== ''
+            ? apiModel[0].phonetics[1].audio
+            : '';
 
     let meanings: MeaningsModel[] = [];
     for (let i = 0; i < apiModel.length; i++) {
@@ -17,7 +22,7 @@ const MeaningsContainer = () => {
     }
 
     const onClickDiv = () => {
-        new Audio(apiModel[0].phonetics[0].audio).play();
+        new Audio(meaningUrl).play();
     }
 
     if (meanings.length == 0) {
@@ -30,7 +35,7 @@ const MeaningsContainer = () => {
                 meanings.map((item: MeaningsModel, index: number) => {
 
                     return <div key={`${item.partOfSpeech}_${index}`} className={classes['meaning-sub-container']}>
-                        {index === 0 ?
+                        {index === 0 && meaningUrl !== '' ?
                             <div style={{ marginLeft: 10, marginTop: 10, cursor: 'pointer' }} onClick={() => onClickDiv()}>
                                 <i className="fa-solid fa-headphones fa-2xl"></i>
                             </div>

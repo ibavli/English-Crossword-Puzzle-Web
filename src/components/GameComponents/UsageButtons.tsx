@@ -1,8 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { black, white } from '../../helpers/materials/colors';
+import { DictionaryAPIModel } from '../../helpers/models/DictionaryApiModel';
 import { Advance, Beginner, Intermediate } from '../../helpers/ResourceHelper/ResourceHelper';
 import { useAppSelector } from '../../store/hooks';
+import { meaningActions } from '../../store/meaningSlice';
 import { usageActions } from '../../store/usageSlice';
 import classes from './UsageButtons.module.css';
 
@@ -15,6 +17,8 @@ const UsageButtons = () => {
         let htmlInputElement = e.target as HTMLInputElement;
         let context: string = htmlInputElement.textContent != null ? htmlInputElement.textContent : '';
         dispatch(usageActions.setUsage(context));
+        const payload: DictionaryAPIModel = { data: [] };
+        dispatch(meaningActions.setMeanings(payload));
     }
 
     const generateDynamicButton = (text: string) => {
