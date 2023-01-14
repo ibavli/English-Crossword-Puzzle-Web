@@ -47,10 +47,6 @@ const CrosswordContainer = () => {
         return () => { window.removeEventListener('keydown', handleKeyDown); };
     }, [usage]);
 
-    useEffect(() => {
-        return () => { window.removeEventListener('keydown', handleKeyDown); };
-    }, [loading]);
-
     const onClickDiv = (item: CrosswordPuzzleApiModel) => {
         if (item.emptyContainer === false && !item.done) {
             setLoading(true);
@@ -62,11 +58,11 @@ const CrosswordContainer = () => {
             setCorrectAnswer(correctAnswer);
             getMeaningsFromDictionaryApi(correctAnswer).then((responseData: DictionaryAPIModel) => {
                 dispatch(meaningActions.setMeanings(responseData));
+                console.log(correctAnswer);
             });
             setLoading(false);
         }
     }
-
 
     const handleKeyDown = (event: any) => {
         let temp = { ...crosswordFuncModelRef.current };

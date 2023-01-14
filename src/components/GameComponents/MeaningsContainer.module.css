@@ -1,0 +1,19 @@
+.meaning-container {
+    height: 100%;
+    border: 1px solid;
+    border-color: gray;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-top: 5px;
+    overflow: auto;
+}
+
+.meaning-sub-container {
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.speech-text {
+    text-align: center;
+    font-weight: bold
+}

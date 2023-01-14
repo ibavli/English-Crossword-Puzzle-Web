@@ -1,6 +1,8 @@
 import React from 'react';
+import { gray } from '../../helpers/materials/colors';
 import { MeaningsModel } from '../../helpers/models/MeaningsModel';
 import { useAppSelector } from '../../store/hooks';
+import classes from './MeaningsContainer.module.css';
 
 const MeaningsContainer = () => {
     const apiModel = useAppSelector((state) => state.meaning.data);
@@ -21,11 +23,11 @@ const MeaningsContainer = () => {
     }
 
     return (
-        <div style={{ height: '100%' }}>
+        <div className={classes['meaning-container']}>
             {
                 meanings.map((item: MeaningsModel, index: number) => {
-                    return <div key={`${item.partOfSpeech}_${index}`}>
-                        <span>{item.partOfSpeech}</span>
+                    return <div key={`${item.partOfSpeech}_${index}`} className={classes['meaning-sub-container']}>
+                        <span className={classes['speech-text']}>{item.partOfSpeech}</span>
                         <ul>
                             {
                                 item.meanings.slice(0, 10).map((subItem: string, subIndex: number) => {
